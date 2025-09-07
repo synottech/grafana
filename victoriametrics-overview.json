@@ -1,0 +1,81 @@
+{
+  "apiVersion": "dashboard.grafana.app/v0alpha1",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "victoriametrics-overview"
+  },
+  "spec": {
+    "panels": [
+      {
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 0,
+          "y": 0
+        },
+        "targets": [
+          {
+            "expr": "min(up{job=\"vmstorage\"} or up{job=\"vmselect\"} or up{job=\"vminsert\"})"
+          }
+        ],
+        "title": "VM Up",
+        "type": "stat"
+      },
+      {
+        "gridPos": {
+          "h": 8,
+          "w": 18,
+          "x": 6,
+          "y": 0
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(vm_rows_inserted_total[5m]))"
+          }
+        ],
+        "title": "Rows Inserted /s",
+        "type": "timeseries"
+      },
+      {
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "targets": [
+          {
+            "expr": "max(vm_active_time_series)"
+          }
+        ],
+        "title": "Active Time Series",
+        "type": "timeseries"
+      },
+      {
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(vm_select_queries_total[5m]))"
+          }
+        ],
+        "title": "Select Queries /s",
+        "type": "timeseries"
+      }
+    ],
+    "schemaVersion": 39,
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timezone": "browser",
+    "title": "VictoriaMetrics Overview"
+  }
+}
