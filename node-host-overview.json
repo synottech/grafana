@@ -1,0 +1,109 @@
+{
+  "apiVersion": "dashboard.grafana.app/v0alpha1",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "node-host-overview"
+  },
+  "spec": {
+    "panels": [
+      {
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 0,
+          "y": 0
+        },
+        "targets": [
+          {
+            "expr": "max(up{job=\"node\"})"
+          }
+        ],
+        "title": "Node Up",
+        "type": "stat"
+      },
+      {
+        "gridPos": {
+          "h": 8,
+          "w": 18,
+          "x": 6,
+          "y": 0
+        },
+        "targets": [
+          {
+            "expr": "avg(1 - avg by (instance)(rate(node_cpu_seconds_total{mode=\"idle\"}[5m])))"
+          }
+        ],
+        "title": "CPU Usage (non-idle)",
+        "type": "timeseries"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit"
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 0,
+          "y": 4
+        },
+        "targets": [
+          {
+            "expr": "(1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)"
+          }
+        ],
+        "title": "Memory Used %",
+        "type": "gauge"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {
+            "unit": "bytes"
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 9,
+          "x": 6,
+          "y": 8
+        },
+        "targets": [
+          {
+            "expr": "max by (device)(node_filesystem_free_bytes{mountpoint=\"/\",fstype!~\"tmpfs|overlay|squashfs\"})"
+          }
+        ],
+        "title": "Disk Free (root)",
+        "type": "timeseries"
+      },
+      {
+        "gridPos": {
+          "h": 8,
+          "w": 9,
+          "x": 15,
+          "y": 8
+        },
+        "targets": [
+          {
+            "expr": "sum by (device)(rate(node_network_receive_bytes_total[5m]))"
+          },
+          {
+            "expr": "sum by (device)(rate(node_network_transmit_bytes_total[5m]))"
+          }
+        ],
+        "title": "Net RX/TX Bytes/s",
+        "type": "timeseries"
+      }
+    ],
+    "schemaVersion": 39,
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timezone": "browser",
+    "title": "Node Host Overview"
+  }
+}
