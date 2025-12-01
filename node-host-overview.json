@@ -1,36 +1,167 @@
 {
-  "apiVersion": "dashboard.grafana.app/v0alpha1",
+  "apiVersion": "dashboard.grafana.app/v1beta1",
   "kind": "Dashboard",
   "metadata": {
     "name": "node-host-overview"
   },
   "spec": {
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations \u0026 Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "links": [],
     "panels": [
       {
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
         "gridPos": {
           "h": 4,
           "w": 6,
           "x": 0,
           "y": 0
         },
+        "id": 1,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "12.3.0",
         "targets": [
           {
-            "expr": "max(up{job=\"node\"})"
+            "expr": "max(up{job=\"node\"})",
+            "refId": "A"
           }
         ],
         "title": "Node Up",
         "type": "stat"
       },
       {
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "showValues": false,
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
         "gridPos": {
           "h": 8,
           "w": 18,
           "x": 6,
           "y": 0
         },
+        "id": 2,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "12.3.0",
         "targets": [
           {
-            "expr": "avg(1 - avg by (instance)(rate(node_cpu_seconds_total{mode=\"idle\"}[5m])))"
+            "expr": "avg(1 - avg by (instance)(rate(node_cpu_seconds_total{mode=\"idle\"}[5m])))",
+            "refId": "A"
           }
         ],
         "title": "CPU Usage (non-idle)",
@@ -39,8 +170,25 @@
       {
         "fieldConfig": {
           "defaults": {
+            "mappings": [],
+            "max": 1,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
             "unit": "percentunit"
-          }
+          },
+          "overrides": []
         },
         "gridPos": {
           "h": 8,
@@ -48,9 +196,27 @@
           "x": 0,
           "y": 4
         },
+        "id": 3,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "12.3.0",
         "targets": [
           {
-            "expr": "(1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)"
+            "expr": "(1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)",
+            "refId": "A"
           }
         ],
         "title": "Memory Used %",
@@ -59,8 +225,60 @@
       {
         "fieldConfig": {
           "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "showValues": false,
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
             "unit": "bytes"
-          }
+          },
+          "overrides": []
         },
         "gridPos": {
           "h": 8,
@@ -68,34 +286,126 @@
           "x": 6,
           "y": 8
         },
+        "id": 4,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "12.3.0",
         "targets": [
           {
-            "expr": "max by (device)(node_filesystem_free_bytes{mountpoint=\"/\",fstype!~\"tmpfs|overlay|squashfs\"})"
+            "expr": "max by (device)(node_filesystem_free_bytes{mountpoint=\"/\",fstype!~\"tmpfs|overlay|squashfs\"})",
+            "refId": "A"
           }
         ],
         "title": "Disk Free (root)",
         "type": "timeseries"
       },
       {
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "showValues": false,
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
         "gridPos": {
           "h": 8,
           "w": 9,
           "x": 15,
           "y": 8
         },
+        "id": 5,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "12.3.0",
         "targets": [
           {
-            "expr": "sum by (device)(rate(node_network_receive_bytes_total[5m]))"
+            "expr": "sum by (device)(rate(node_network_receive_bytes_total[5m]))",
+            "refId": "A"
           },
           {
-            "expr": "sum by (device)(rate(node_network_transmit_bytes_total[5m]))"
+            "expr": "sum by (device)(rate(node_network_transmit_bytes_total[5m]))",
+            "refId": "B"
           }
         ],
         "title": "Net RX/TX Bytes/s",
         "type": "timeseries"
       }
     ],
-    "schemaVersion": 39,
+    "preload": false,
+    "refresh": "",
+    "schemaVersion": 42,
+    "tags": [],
     "templating": {
       "list": []
     },
@@ -103,7 +413,8 @@
       "from": "now-1h",
       "to": "now"
     },
+    "timepicker": {},
     "timezone": "browser",
-    "title": "Node Host Overview"
+    "title": "Node Host Overview TOP"
   }
 }
